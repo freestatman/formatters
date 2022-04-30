@@ -11,6 +11,13 @@ formats_2d <- c(
   "xx / xx", "xx. / xx.", "xx.x / xx.x", "xx.xx / xx.xx", "xx.xxx / xx.xxx",
   "xx (xx%)", "xx (xx.%)", "xx (xx.x%)", "xx (xx.xx%)",
   "xx. (xx.%)", "xx.x (xx.x%)", "xx.xx (xx.xx%)",
+
+  "xx (xx*100)", "xx (xx.*100)", "xx (xx.x*100)", "xx (xx.xx*100)",
+  "xx. (xx.*100)", "xx.x (xx.x*100)", "xx.xx (xx.xx*100)",
+
+  "xx (xx)", "xx (xx.)", "xx (xx.x)", "xx (xx.xx)",
+  "xx. (xx)", "xx. (xx.)", "xx. (xx.x)", "xx. (xx.xx)",
+
   "(xx, xx)", "(xx., xx.)", "(xx.x, xx.x)", "(xx.xx, xx.xx)",
   "(xx.xxx, xx.xxx)", "(xx.xxxx, xx.xxxx)",
   "xx - xx", "xx.x - xx.x", "xx.xx - xx.xx",
@@ -158,15 +165,13 @@ round_fmt <- function(x, digits, na_str = "NA") {
     }
 }
 
-
-
-val_pct_helper <- function(x, dig1, dig2, na_str, pct = TRUE) {
-    if(pct)
-        x[2] <- x[2] * 100
+val_pct_helper <- function(x, dig1, dig2, na_str, pct = TRUE, pct_sign=TRUE) {
+    if(pct) x[2] <- x[2] * 100
+    if(pct_sign) pct_sign <- "%" else pct_sign <- ""
     paste0(round_fmt(x[1], digits = dig1, na_str = na_str),
            " (",
            round_fmt(x[2], digits = dig2, na_str = na_str),
-           if(pct) "%", ")")
+           if(pct) pct_sign, ")")
 }
 
 sep_2d_helper <- function(x, dig1, dig2, sep, na_str, wrap = NULL) {
@@ -252,6 +257,7 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
                    "xx.x / xx.x" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = " / ", na_str = na_str),
                    "xx.xx / xx.xx" = sep_2d_helper(x, dig1 = 2, dig2 = 2, sep = " / ", na_str = na_str),
                    "xx.xxx / xx.xxx" = sep_2d_helper(x, dig1 = 3, dig2 = 3, sep = " / ", na_str = na_str),
+
                    "xx (xx%)" = val_pct_helper(x, dig1 = NA, dig2 = NA, na_str = na_str),
                    "xx (xx.%)" = val_pct_helper(x, dig1 = NA, dig2 = 0, na_str = na_str),
                    "xx (xx.x%)" = val_pct_helper(x, dig1 = NA, dig2 = 1, na_str = na_str),
@@ -259,6 +265,24 @@ format_value <- function(x, format = NULL, output = c("ascii", "html"), na_str =
                    "xx. (xx.%)" = val_pct_helper(x, dig1 = 0, dig2 = 0, na_str = na_str),
                    "xx.x (xx.x%)" = val_pct_helper(x, dig1 = 1, dig2 = 1, na_str = na_str),
                    "xx.xx (xx.xx%)" = val_pct_helper(x, dig1 = 2, dig2 = 2, na_str = na_str),
+
+                   "xx (xx*100)" = val_pct_helper(x, dig1 = NA, dig2 = NA, na_str = na_str, pct_sign = FALSE),
+                   "xx (xx.*100)" = val_pct_helper(x, dig1 = NA, dig2 = 0, na_str = na_str, pct_sign = FALSE),
+                   "xx (xx.x*100)" = val_pct_helper(x, dig1 = NA, dig2 = 1, na_str = na_str, pct_sign = FALSE),
+                   "xx (xx.xx*100)" = val_pct_helper(x, dig1 = NA, dig2 = 2, na_str = na_str, pct_sign = FALSE),
+                   "xx. (xx.*100)" = val_pct_helper(x, dig1 = 0, dig2 = 0, na_str = na_str, pct_sign = FALSE),
+                   "xx.x (xx.x*100)" = val_pct_helper(x, dig1 = 1, dig2 = 1, na_str = na_str, pct_sign = FALSE),
+                   "xx.xx (xx.xx*100)" = val_pct_helper(x, dig1 = 2, dig2 = 2, na_str = na_str, pct_sign = FALSE),
+
+                   "xx (xx)" = val_pct_helper(x, dig1 = NA, dig2 = NA, na_str = na_str, pct = FALSE),
+                   "xx (xx.)" = val_pct_helper(x, dig1 = NA, dig2 = 0, na_str = na_str, pct = FALSE),
+                   "xx (xx.x)" = val_pct_helper(x, dig1 = NA, dig2 = 1, na_str = na_str, pct = FALSE),
+                   "xx (xx.xx)" = val_pct_helper(x, dig1 = NA, dig2 = 2, na_str = na_str, pct = FALSE),
+                   "xx. (xx)" = val_pct_helper(x, dig1 = 0, dig2 = NA, na_str = na_str, pct = FALSE),
+                   "xx. (xx.)" = val_pct_helper(x, dig1 = 0, dig2 = 0, na_str = na_str, pct = FALSE),
+                   "xx. (xx.x)" = val_pct_helper(x, dig1 = 0, dig2 = 1, na_str = na_str, pct = FALSE),
+                   "xx. (xx.xx)" = val_pct_helper(x, dig1 = 0, dig2 = 2, na_str = na_str, pct = FALSE),
+
                    "(xx, xx)" = sep_2d_helper(x, dig1 = NA, dig2 = NA, sep = ", ", na_str = na_str, wrap = c("(", ")")),
                    "(xx., xx.)" = sep_2d_helper(x, dig1 = 0, dig2 = 0, sep = ", ", na_str = na_str, wrap = c("(", ")")),
                    "(xx.x, xx.x)" = sep_2d_helper(x, dig1 = 1, dig2 = 1, sep = ", ", na_str = na_str, wrap = c("(", ")")),

@@ -93,8 +93,50 @@ expect_identical(format_value(values, format = "xx.x (xx.x%)"),
 expect_identical(format_value(values, format = "xx.xx (xx.xx%)"),
                  "5.12 (789.11%)")
 
-expect_identical(format_value(values, format = "xx.x (xx.x%)"),
-                 "5.1 (789.1%)")
+expect_identical(format_value(values, format = "xx (xx*100)"),
+                 paste0(values[1], " (", values[2]*100, ")"))
+
+expect_identical(format_value(values, format = "xx (xx.*100)"),
+                 paste0(values[1], " (789)"))
+
+expect_identical(format_value(values, format = "xx. (xx.*100)"),
+                 paste0(5, " (789)"))
+
+expect_identical(format_value(values, format = "xx (xx.x*100)"),
+                 paste0(values[1], " (789.1)"))
+
+expect_identical(format_value(values, format = "xx (xx.xx*100)"),
+                 paste0(values[1], " (789.11)"))
+
+expect_identical(format_value(values, format = "xx.x (xx.x*100)"),
+                 "5.1 (789.1)")
+
+expect_identical(format_value(values, format = "xx.xx (xx.xx*100)"),
+                 "5.12 (789.11)")
+
+expect_identical(format_value(values, format = "xx (xx)"),
+                 paste0(values[1], " (", values[2], ")"))
+
+expect_identical(format_value(values, format = "xx (xx.)"),
+                 paste0(values[1], " (8)"))
+
+expect_identical(format_value(values, format = "xx (xx.x)"),
+                 paste0(values[1], " (7.9)"))
+
+expect_identical(format_value(values, format = "xx (xx.xx)"),
+                 paste0(values[1], " (7.89)"))
+
+expect_identical(format_value(values, format = "xx. (xx)"),
+                 paste0(5, " (", values[2], ")"))
+
+expect_identical(format_value(values, format = "xx. (xx.)"),
+                 paste0(5, " (8)"))
+
+expect_identical(format_value(values, format = "xx. (xx.x)"),
+                 "5 (7.9)")
+
+expect_identical(format_value(values, format = "xx. (xx.xx)"),
+                 "5 (7.89)")
 
 expect_identical(format_value(values, format = "(xx, xx)"),
                  paste0("(", values[1], ", ", values[2], ")"))
