@@ -165,7 +165,7 @@ round_fmt <- function(x, digits, na_str = "NA") {
     }
 }
 
-val_pct_helper <- function(x, dig1, dig2, na_str, pct = TRUE, pct_sign=TRUE) {
+val_pct_helper <- function(x, dig1, dig2, na_str, pct = TRUE, pct_sign = TRUE) {
     if(pct) x[2] <- x[2] * 100
     if(pct_sign) pct_sign <- "%" else pct_sign <- ""
     paste0(round_fmt(x[1], digits = dig1, na_str = na_str),
